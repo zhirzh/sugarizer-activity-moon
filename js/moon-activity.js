@@ -1,4 +1,4 @@
-define(['activity/data-model'], function(DataModel) {
+define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
 
     'use strict';
 
@@ -76,7 +76,7 @@ define(['activity/data-model'], function(DataModel) {
         */
 
         updateInfo();
-        ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+        Draw(DataModel.phase_of_moon, IMAGE_SIZE);
         if (showSouth) {
             ctx.save();
             ctx.rotate(Math.PI);
