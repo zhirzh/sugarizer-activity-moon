@@ -2,6 +2,8 @@ define([], function() {
 
     'use strict';
 
+    var canvas, ctx;
+
     var buttonStates = {
         grid: false,
         hemisphere: false
@@ -9,11 +11,26 @@ define([], function() {
 
 
     function init() {
-        addEventListeners();
+        initEventListeners();
+        initCanvas();
+        updateSizes();
     }
 
 
-    function addEventListeners() {
+    function initCanvas() {
+        canvas = document.querySelector('canvas');
+        ctx = canvas.getContext('2d');
+    }
+
+
+    function updateSizes() {
+        var navbarOffset = document.querySelector('#main-toolbar').clientHeight;
+        document.querySelector('#panel-container').style.height = (window.innerHeight - navbarOffset) + 'px';
+    }
+
+
+    function initEventListeners() {
+        window.addEventListener('resize', updateSizes);
         document.querySelector('#main-toolbar')
             .addEventListener('click', function(e) {
                 switch (e.target.id) {
