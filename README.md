@@ -1,8 +1,9 @@
 # Sugarizer Activity - Moon
 
 ## To-Do
-* Add toggle buttons to Navbar
-* Add save button to Navbar
+* ~~Add toggle buttons to Navbar~~
+* ~~Add save button to Navbar~~
+    * Implement save feature
 * Add 2 display panels
     * Generated information
     * Moon view
