@@ -1,3 +1,1 @@
-#main-toolbar #activity-button {
-  background-image: url(../activity/activity-icon.svg);
-}
+@import url(navbar.css);
