@@ -7,17 +7,25 @@ define([], function() {
 
 
     function init() {
+        toggleGridBtn = document.querySelector('#toggle-grid-button');
+        toggleHemisphereBtn = document.querySelector('#toggle-hemisphere-button');
+
+        canvas = document.querySelector('canvas');
+        ctx = canvas.getContext('2d');
+
+        moon = document.querySelector('img#moon');
+
         initPrefs();
         initEventListeners();
-        initCanvas();
         updateSizes();
         updateView();
     }
 
 
     function initPrefs() {
-        toggleGridBtn = document.querySelector('#toggle-grid-button');
-        toggleHemisphereBtn = document.querySelector('#toggle-hemisphere-button');
+        /*
+            Store preferences in window.localStorage across sessions.
+        */
 
         showGrid = window.localStorage.getItem('showGrid');
         if (showGrid === 'true') {
@@ -39,14 +47,11 @@ define([], function() {
     }
 
 
-    function initCanvas() {
-        canvas = document.querySelector('canvas');
-        ctx = canvas.getContext('2d');
-        moon = document.querySelector('img#moon');
-    }
-
-
     function updateSizes() {
+        /*
+            Dynamically resize elements as and when the window resizes.
+        */
+
         var navbarOffset = document.querySelector('#main-toolbar').clientHeight;
         document.querySelector('#panel-container').style.height = (window.innerHeight - navbarOffset) + 'px';
 
@@ -66,6 +71,10 @@ define([], function() {
 
 
     function updateView() {
+        /*
+            Draw moon.
+        */
+
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
         if (showSouth) {
             ctx.save();
@@ -78,6 +87,10 @@ define([], function() {
 
 
     function initEventListeners() {
+        /*
+            Bind event-listeners.
+        */
+
         window.addEventListener('resize', function() {
             updateSizes();
             updateView();
@@ -104,6 +117,10 @@ define([], function() {
 
 
     function toggleHemisphere() {
+        /*
+            Rotate moon image to represent southern-hemisphere view.
+        */
+
         showSouth = !showSouth;
         if (showSouth) {
             toggleHemisphereBtn.classList.add('active');
