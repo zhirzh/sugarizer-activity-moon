@@ -127,7 +127,7 @@ define(['activity/data-model'], function(DataModel) {
 
         toggleGridBtn.addEventListener('click', toggleGrid);
         toggleHemisphereBtn.addEventListener('click', toggleHemisphere);
-        // document.querySelector('#save-image-button').addEventListener('click', saveImage);
+        document.querySelector('#save-image-button').addEventListener('click', saveImage);
     }
 
 
@@ -160,6 +160,14 @@ define(['activity/data-model'], function(DataModel) {
 
         clearTimeout(updateTimeout);
         updateView();
+    }
+
+
+    function saveImage() {
+        var dataURL = canvas.toDataURL('image/jpeg', 1);
+        var downloadLink = document.querySelector('#save-image-button a');
+        downloadLink.href = dataURL;
+        downloadLink.click();
     }
 
 

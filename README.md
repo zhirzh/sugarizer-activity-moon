@@ -3,11 +3,12 @@
 ## To-Do
 * ~~Add toggle buttons to Navbar~~
 * ~~Add save button to Navbar~~
-    * Implement save feature
+    * ~~Implement save feature~~
 * ~~Add 2 display panels~~
     * ~~Generated information~~
     * ~~Moon view~~
 * ~~Add 'toggle hemisphere' feature~~
 * Add 'show grid' feature
+* Add compass and legend
 * ~~Add module to generate information~~
 * Draw shadow region of moon
