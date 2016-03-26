@@ -2,7 +2,7 @@ define([], function() {
 
     'use strict';
 
-    var canvas, ctx;
+    var canvas, ctx, moon, IMAGE_SIZE, HALF_SIZE;
 
     var buttonStates = {
         grid: false,
@@ -14,23 +14,45 @@ define([], function() {
         initEventListeners();
         initCanvas();
         updateSizes();
+        updateView();
     }
 
 
     function initCanvas() {
         canvas = document.querySelector('canvas');
         ctx = canvas.getContext('2d');
+        moon = document.querySelector('img#moon');
     }
 
 
     function updateSizes() {
         var navbarOffset = document.querySelector('#main-toolbar').clientHeight;
         document.querySelector('#panel-container').style.height = (window.innerHeight - navbarOffset) + 'px';
+
+        var canvasPanelHeight = document.querySelector('#panel-right').clientHeight;
+        var canvasPanelWidth = document.querySelector('#panel-right').clientWidth;
+        var paddingPercent = 0.05;
+
+        IMAGE_SIZE = (1 - paddingPercent) * Math.min(canvasPanelWidth, canvasPanelHeight);
+        canvas.width = IMAGE_SIZE;
+        canvas.height = IMAGE_SIZE;
+
+        canvas.style.top = 0.5 * (canvasPanelHeight - canvas.height) + 'px';
+        canvas.style.left = 0.5 * (canvasPanelWidth - canvas.width) + 'px';
+    }
+
+
+    function updateView() {
+        ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
     }
 
 
     function initEventListeners() {
-        window.addEventListener('resize', updateSizes);
+        window.addEventListener('resize', function() {
+            updateSizes();
+            updateView();
+        });
+
         document.querySelector('#main-toolbar')
             .addEventListener('click', function(e) {
                 switch (e.target.id) {

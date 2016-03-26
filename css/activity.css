@@ -22,17 +22,13 @@ body {
 }
 
 #panel-right {
+    background-color: black;
     width: 60%;
     position: relative;
 }
 
 canvas {
-    background-color: red;
-
     position: absolute;
     top: 0;
     left: 0;
-
-    height: 100%;
-    width: 100%;
 }
