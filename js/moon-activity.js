@@ -2,19 +2,35 @@ define([], function() {
 
     'use strict';
 
-    var canvas, ctx, moon, IMAGE_SIZE, HALF_SIZE;
-
-    var buttonStates = {
-        grid: false,
-        hemisphere: false
-    };
+    var canvas, ctx, moon, IMAGE_SIZE, HALF_SIZE, buttonStates, updateTimeout;
 
 
     function init() {
+        initButtonStates();
         initEventListeners();
         initCanvas();
         updateSizes();
         updateView();
+    }
+
+
+    function initButtonStates() {
+        var storesButtonStates = window.localStorage.getItem('buttonStates');
+        if (storesButtonStates === null) {
+            buttonStates = {
+                grid: false,
+                hemisphere: false
+            };
+            window.localStorage.setItem('buttonStates', JSON.stringify(buttonStates));
+        }
+
+        buttonStates = JSON.parse(storesButtonStates);
+        for (var k in buttonStates) {
+            if (buttonStates[k]) {
+                document.querySelector('#toggle-' + k + '-button')
+                    .classList.add('active');
+            }
+        }
     }
 
 
@@ -34,6 +50,8 @@ define([], function() {
         var paddingPercent = 0.05;
 
         IMAGE_SIZE = (1 - paddingPercent) * Math.min(canvasPanelWidth, canvasPanelHeight);
+        HALF_SIZE = 0.5 * IMAGE_SIZE;
+
         canvas.width = IMAGE_SIZE;
         canvas.height = IMAGE_SIZE;
 
@@ -44,6 +62,13 @@ define([], function() {
 
     function updateView() {
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+        if (buttonStates.hemisphere) {
+            ctx.save();
+            ctx.rotate(Math.PI);
+            ctx.drawImage(canvas, -IMAGE_SIZE, -IMAGE_SIZE);
+            ctx.restore();
+        }
+        updateTimeout = setTimeout(updateView, 1000);
     }
 
 
@@ -84,11 +109,13 @@ define([], function() {
         } else {
             toggleHemisphere();
         }
+        window.localStorage.setItem('buttonStates', JSON.stringify(buttonStates));
     }
 
 
     function toggleHemisphere() {
-        console.log(buttonStates.hemisphere);
+        clearTimeout(updateTimeout);
+        updateView();
     }
 
 
