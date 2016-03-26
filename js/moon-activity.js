@@ -91,21 +91,21 @@ define(['activity/data-model'], function(DataModel) {
         DataModel.update_moon_calculations();
 
         var infoParts = {
-            'Today\'s Moon Information': [Date()],
+            'Today\'s Moon Information': [_(new Date())],
             'Phase': [DataModel.moon_phase_name()],
             'Julian Date': [DataModel.julian_date.toFixed(2), '(astronomical)'],
             'Age': [DataModel.days_old + ' days,', DataModel.hours_old + ' hours,', DataModel.minutes_old + ' minutes'],
             'Lunation': [(100 * DataModel.phase_of_moon).toFixed(2) + '%', 'through lunation', DataModel.lunation],
             'Surface Visibility': [(100 * DataModel.percent_of_full_moon).toFixed(2) + '%', '(estimated)'],
             'Selenographic Terminator Longitude': [DataModel.selenographic_deg.toFixed(2) + '\u00b0', DataModel.west_or_east, '(' + DataModel.rise_or_set + ')'],
-            'Next Full Moon': [new Date(1000 * DataModel.next_full_moon_date), 'in', DataModel.days_until_full_moon.toFixed(), 'days'],
-            'Next New Moon': [new Date(1000 * DataModel.next_new_moon_date), 'in', DataModel.days_until_new_moon.toFixed(), 'days'],
-            'Next Lunar eclipse': [new Date(1000 * DataModel.next_lunar_eclipse_date), 'in', DataModel.days_until_lunar_eclipse.toFixed(), 'days'],
-            'Next Solar eclipse': [new Date(1000 * DataModel.next_solar_eclipse_date), 'in', DataModel.days_until_solar_eclipse.toFixed(), 'days']
+            'Next Full Moon': [_(new Date(1000 * DataModel.next_full_moon_date)), 'in', DataModel.days_until_full_moon.toFixed(), 'days'],
+            'Next New Moon': [_(new Date(1000 * DataModel.next_new_moon_date)), 'in', DataModel.days_until_new_moon.toFixed(), 'days'],
+            'Next Lunar eclipse': [_(new Date(1000 * DataModel.next_lunar_eclipse_date)), 'in', DataModel.days_until_lunar_eclipse.toFixed(), 'days'],
+            'Next Solar eclipse': [_(new Date(1000 * DataModel.next_solar_eclipse_date)), 'in', DataModel.days_until_solar_eclipse.toFixed(), 'days']
         };
 
         var infoHTML = [];
-        for(var k in infoParts) {
+        for (var k in infoParts) {
             var html = '<p>' + k + ':<br>' + infoParts[k].join(' ') + '</p>';
             infoHTML.push(html);
         }
@@ -160,6 +160,47 @@ define(['activity/data-model'], function(DataModel) {
 
         clearTimeout(updateTimeout);
         updateView();
+    }
+
+
+    function _(date) {
+        date = date.toString().split(' ');
+
+        date[1] = [date[2], date[2] = date[1]][0];
+
+        date[0] = {
+            Sun: 'Sunday',
+            Mon: 'Monday',
+            Tue: 'Tuesday',
+            Wed: 'Wednesday',
+            Thu: 'Thursday',
+            Fri: 'Friday',
+            Sat: 'Saturday'
+        }[date[0]];
+
+        date[2] = {
+            Jan: 'January',
+            Feb: 'February',
+            Mar: 'March',
+            Apr: 'April',
+            May: 'May',
+            Jun: 'June',
+            Jul: 'July',
+            Aug: 'August',
+            Sep: 'September',
+            Oct: 'October',
+            Nov: 'November',
+            Dec: 'December'
+        }[date[2]];
+
+        date[4] = date[4].split(':');
+        date[5] = ((+date[4][0]) < 12) ? 'AM' : 'PM';
+        date[4][0] = ((+date[4][0]) % 12) ? (+date[4][0]) % 12 : 12;
+        date[4] = date[4].join(':');
+
+        date[6] = date[6].slice(1, -1);
+
+        return date.join(' ');
     }
 
     return {
