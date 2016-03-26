@@ -5,8 +5,9 @@
 * ~~Add save button to Navbar~~
     * Implement save feature
 * ~~Add 2 display panels~~
-    * Generated information
+    * ~~Generated information~~
     * ~~Moon view~~
 * ~~Add 'toggle hemisphere' feature~~
 * Add 'show grid' feature
-* Add module to generate information
+* ~~Add module to generate information~~
+* Draw shadow region of moon
