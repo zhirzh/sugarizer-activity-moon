@@ -7,6 +7,6 @@
 * ~~Add 2 display panels~~
     * Generated information
     * ~~Moon view~~
-* Add 'toggle hemisphere' feature
+* ~~Add 'toggle hemisphere' feature~~
 * Add 'show grid' feature
 * Add module to generate information

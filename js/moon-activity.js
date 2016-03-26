@@ -2,11 +2,12 @@ define([], function() {
 
     'use strict';
 
-    var canvas, ctx, moon, IMAGE_SIZE, HALF_SIZE, buttonStates, updateTimeout;
+    var canvas, ctx, moon, IMAGE_SIZE, HALF_SIZE, updateTimeout;
+    var toggleGridBtn, toggleHemisphereBtn, showGrid, showSouth;
 
 
     function init() {
-        initButtonStates();
+        initPrefs();
         initEventListeners();
         initCanvas();
         updateSizes();
@@ -14,22 +15,26 @@ define([], function() {
     }
 
 
-    function initButtonStates() {
-        var storesButtonStates = window.localStorage.getItem('buttonStates');
-        if (storesButtonStates === null) {
-            buttonStates = {
-                grid: false,
-                hemisphere: false
-            };
-            window.localStorage.setItem('buttonStates', JSON.stringify(buttonStates));
+    function initPrefs() {
+        toggleGridBtn = document.querySelector('#toggle-grid-button');
+        toggleHemisphereBtn = document.querySelector('#toggle-hemisphere-button');
+
+        showGrid = window.localStorage.getItem('showGrid');
+        if (showGrid === 'true') {
+            showGrid = true;
+            toggleGridBtn.classList.add('active');
+        } else {
+            showGrid = false;
+            window.localStorage.setItem('showGrid', false);
         }
 
-        buttonStates = JSON.parse(storesButtonStates);
-        for (var k in buttonStates) {
-            if (buttonStates[k]) {
-                document.querySelector('#toggle-' + k + '-button')
-                    .classList.add('active');
-            }
+        showSouth = window.localStorage.getItem('showSouth');
+        if (showSouth === 'true') {
+            showSouth = true;
+            toggleHemisphereBtn.classList.add('active');
+        } else {
+            showSouth = false;
+            window.localStorage.setItem('showSouth', false);
         }
     }
 
@@ -62,7 +67,7 @@ define([], function() {
 
     function updateView() {
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
-        if (buttonStates.hemisphere) {
+        if (showSouth) {
             ctx.save();
             ctx.rotate(Math.PI);
             ctx.drawImage(canvas, -IMAGE_SIZE, -IMAGE_SIZE);
@@ -78,49 +83,37 @@ define([], function() {
             updateView();
         });
 
-        document.querySelector('#main-toolbar')
-            .addEventListener('click', function(e) {
-                switch (e.target.id) {
-                    case 'toggle-grid-button':
-                    case 'toggle-hemisphere-button':
-                        toggle('#' + e.target.id);
-                        break;
-                    case 'save-image-button':
-                        saveImage();
-                        break;
-                    default:
-                        break;
-                }
-            });
+        toggleGridBtn.addEventListener('click', toggleGrid);
+        toggleHemisphereBtn.addEventListener('click', toggleHemisphere);
+        // document.querySelector('#save-image-button').addEventListener('click', saveImage);
     }
 
 
-    function toggle(id) {
-        var buttonName = id.split('-')[1];
-        buttonStates[buttonName] = !buttonStates[buttonName];
-        if (buttonStates[buttonName]) {
-            document.querySelector(id).classList.add('active');
+    function toggleGrid() {
+        showGrid = !showGrid;
+        if (showGrid) {
+            toggleGridBtn.classList.add('active');
         } else {
-            document.querySelector(id).classList.remove('active');
+            toggleGridBtn.classList.remove('active');
         }
+        window.localStorage.setItem('showGrid', showGrid);
 
-        if (buttonName === 'grid') {
-            toggleGrid();
-        } else {
-            toggleHemisphere();
-        }
-        window.localStorage.setItem('buttonStates', JSON.stringify(buttonStates));
-    }
-
-
-    function toggleHemisphere() {
         clearTimeout(updateTimeout);
         updateView();
     }
 
 
-    function toggleGrid() {
-        console.log(buttonStates.grid);
+    function toggleHemisphere() {
+        showSouth = !showSouth;
+        if (showSouth) {
+            toggleHemisphereBtn.classList.add('active');
+        } else {
+            toggleHemisphereBtn.classList.remove('active');
+        }
+        window.localStorage.setItem('showSouth', showSouth);
+
+        clearTimeout(updateTimeout);
+        updateView();
     }
 
     return {
