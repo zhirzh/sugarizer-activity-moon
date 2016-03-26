@@ -1,4 +1,4 @@
-define([], function() {
+define(['activity/data-model'], function(DataModel) {
 
     'use strict';
 
@@ -75,6 +75,7 @@ define([], function() {
             Draw moon.
         */
 
+        updateInfo();
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
         if (showSouth) {
             ctx.save();
@@ -82,7 +83,35 @@ define([], function() {
             ctx.drawImage(canvas, -IMAGE_SIZE, -IMAGE_SIZE);
             ctx.restore();
         }
-        updateTimeout = setTimeout(updateView, 1000);
+        updateTimeout = setTimeout(updateView, 5000);
+    }
+
+
+    function updateInfo() {
+        DataModel.update_moon_calculations();
+
+        var infoParts = {
+            'Today\'s Moon Information': [Date()],
+            'Phase': [DataModel.moon_phase_name()],
+            'Julian Date': [DataModel.julian_date.toFixed(2), '(astronomical)'],
+            'Age': [DataModel.days_old + ' days,', DataModel.hours_old + ' hours,', DataModel.minutes_old + ' minutes'],
+            'Lunation': [(100 * DataModel.phase_of_moon).toFixed(2) + '%', 'through lunation', DataModel.lunation],
+            'Surface Visibility': [(100 * DataModel.percent_of_full_moon).toFixed(2) + '%', '(estimated)'],
+            'Selenographic Terminator Longitude': [DataModel.selenographic_deg.toFixed(2) + '\u00b0', DataModel.west_or_east, '(' + DataModel.rise_or_set + ')'],
+            'Next Full Moon': [new Date(1000 * DataModel.next_full_moon_date), 'in', DataModel.days_until_full_moon.toFixed(), 'days'],
+            'Next New Moon': [new Date(1000 * DataModel.next_new_moon_date), 'in', DataModel.days_until_new_moon.toFixed(), 'days'],
+            'Next Lunar eclipse': [new Date(1000 * DataModel.next_lunar_eclipse_date), 'in', DataModel.days_until_lunar_eclipse.toFixed(), 'days'],
+            'Next Solar eclipse': [new Date(1000 * DataModel.next_solar_eclipse_date), 'in', DataModel.days_until_solar_eclipse.toFixed(), 'days']
+        };
+
+        var infoHTML = [];
+        for(var k in infoParts) {
+            var html = '<p>' + k + ':<br>' + infoParts[k].join(' ') + '</p>';
+            infoHTML.push(html);
+        }
+
+        infoHTML = infoHTML.join('');
+        document.querySelector('#panel-left').innerHTML = infoHTML;
     }
 
 
