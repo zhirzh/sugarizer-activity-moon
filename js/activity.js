@@ -7,7 +7,7 @@ define(function (require) {
 
         // Initialize the activity.
         activity.setup();
-        moonActivity.init();
+        moonActivity.setup();
 
     });
 

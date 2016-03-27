@@ -2,49 +2,45 @@ define(function() {
 
     'use strict';
 
-    var canvas, ctx, moon, IMAGE_SIZE, HALF_SIZE;
-
-
-    (function init() {
-        canvas = document.querySelector('canvas');
-        ctx = canvas.getContext('2d');
-
+    var canvas = document.querySelector('canvas'),
+        ctx = canvas.getContext('2d'),
         moon = document.querySelector('img#moon');
 
-        if (!ctx.ellipse) {
-            ctx.ellipse = function(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise) {
-                /* for this project, we do not need: rotation, startAngle, endAngle, anticlockwise */
-                x -= radiusX;
-                y -= radiusY;
-                radiusX *= 2;
-                radiusY *= 2;
+    var IMAGE_SIZE, HALF_SIZE;
 
-                var kappa = 0.5522848,
-                    ox = (radiusX / 2) * kappa, // control point offset horizontal
-                    oy = (radiusY / 2) * kappa, // control point offset vertical
-                    xe = x + radiusX, // x-end
-                    ye = y + radiusY, // y-end
-                    xm = x + radiusX / 2, // x-middle
-                    ym = y + radiusY / 2; // y-middle
+    if (!ctx.ellipse) {
+        ctx.ellipse = function(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise) {
+            /* for this project, we do not need: rotation, startAngle, endAngle, anticlockwise */
+            x -= radiusX;
+            y -= radiusY;
+            radiusX *= 2;
+            radiusY *= 2;
 
-                if (startAngle === Math.PI / 2 && endAngle === 3 * Math.PI / 2) {
-                    ctx.moveTo(xm, ye);
-                    ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym); /* 2nd quarter */
-                    ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y); /* 3rd quarter */
-                } else if (startAngle === 3 * Math.PI / 2 && endAngle === Math.PI / 2) {
-                    ctx.moveTo(xm, y);
-                    ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym); /* 4th quarter */
-                    ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye); /* 1st quarter */
-                } else if (startAngle === 0 && endAngle === 2 * Math.PI) {
-                    ctx.moveTo(xe, ym);
-                    ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye); /* 1st quarter */
-                    ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym); /* 2nd quarter */
-                    ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y); /* 3rd quarter */
-                    ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym); /* 4th quarter */
-                }
-            };
-        }
-    })();
+            var kappa = 0.5522848,
+                ox = (radiusX / 2) * kappa, // control point offset horizontal
+                oy = (radiusY / 2) * kappa, // control point offset vertical
+                xe = x + radiusX, // x-end
+                ye = y + radiusY, // y-end
+                xm = x + radiusX / 2, // x-middle
+                ym = y + radiusY / 2; // y-middle
+
+            if (startAngle === Math.PI / 2 && endAngle === 3 * Math.PI / 2) {
+                ctx.moveTo(xm, ye);
+                ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym); /* 2nd quarter */
+                ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y); /* 3rd quarter */
+            } else if (startAngle === 3 * Math.PI / 2 && endAngle === Math.PI / 2) {
+                ctx.moveTo(xm, y);
+                ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym); /* 4th quarter */
+                ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye); /* 1st quarter */
+            } else if (startAngle === 0 && endAngle === 2 * Math.PI) {
+                ctx.moveTo(xe, ym);
+                ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye); /* 1st quarter */
+                ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym); /* 2nd quarter */
+                ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y); /* 3rd quarter */
+                ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym); /* 4th quarter */
+            }
+        };
+    }
 
 
     function drawMoon(phase_of_moon) {

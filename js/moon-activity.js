@@ -2,17 +2,17 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
 
     'use strict';
 
-    var canvas, ctx, IMAGE_SIZE, HALF_SIZE, updateTimeout;
-    var toggleGridBtn, toggleHemisphereBtn, showGrid, showSouth;
-
-
-    function init() {
-        toggleGridBtn = document.querySelector('#toggle-grid-button');
+    var toggleGridBtn = document.querySelector('#toggle-grid-button'),
         toggleHemisphereBtn = document.querySelector('#toggle-hemisphere-button');
 
-        canvas = document.querySelector('canvas');
+    var canvas = document.querySelector('canvas'),
         ctx = canvas.getContext('2d');
 
+    var IMAGE_SIZE, HALF_SIZE, updateTimeout;
+    var showGrid, showSouth;
+
+
+    function setup() {
         initPrefs();
         initEventListeners();
         updateSizes();
@@ -216,6 +216,6 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
     }
 
     return {
-        init: init
+        setup: setup
     };
 });
