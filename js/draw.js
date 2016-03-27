@@ -47,12 +47,13 @@ define(function() {
     })();
 
 
-    function draw(phase_of_moon, IMAGE_SIZE) {
+    function drawMoon(phase_of_moon, IMAGE_SIZE) {
         var HALF_SIZE = IMAGE_SIZE / 2;
 
         var phase_shadow_adjust = null;
         var arc_scale = null;
 
+        ctx.strokeStyle = 'black';
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
@@ -108,6 +109,57 @@ define(function() {
     }
 
 
+    function drawGrid(compass_text, IMAGE_SIZE) {
+        var HALF_SIZE = 0.5 * IMAGE_SIZE;
+        var needleLength = 0.08 * IMAGE_SIZE;
+
+        ctx.font = '16px Sans';
+        ctx.lineWidth = 3;
+
+        /* Latitude Labels */
+        ctx.fillStyle = 'blue';
+        drawLabel(HALF_SIZE + 1, HALF_SIZE, 26, 22, '0°');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE * 0.50, 36, 22, '30°');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE * 1.5, 36, 22, '30°');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE * 0.15, 36, 22, '60°');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE * 1.85, 36, 22, '60°');
+
+        /* Longitude Labels */
+        ctx.fillStyle = 'red';
+        drawLabel((HALF_SIZE * 0.48), HALF_SIZE, 36, 22, '30°');
+        drawLabel((HALF_SIZE * 1.52), HALF_SIZE, 36, 22, '30°');
+        drawLabel((HALF_SIZE * 0.15), HALF_SIZE, 36, 22, '60°');
+        drawLabel((HALF_SIZE * 1.85), HALF_SIZE, 36, 22, '60°');
+
+        /* Latitude Lines*/
+        ctx.strokeStyle = 'blue';
+        drawLine(0, HALF_SIZE, IMAGE_SIZE, HALF_SIZE);
+        drawLine(HALF_SIZE * 0.15, HALF_SIZE * 0.5, IMAGE_SIZE - HALF_SIZE * 0.15, HALF_SIZE * 0.5);
+        drawLine(HALF_SIZE * 0.15, HALF_SIZE * 1.5, IMAGE_SIZE - HALF_SIZE * 0.15, HALF_SIZE * 1.5);
+        drawLine(HALF_SIZE * 0.5, HALF_SIZE * 0.15, IMAGE_SIZE - HALF_SIZE * 0.5, HALF_SIZE * 0.15);
+        drawLine(HALF_SIZE * 0.5, HALF_SIZE * 1.85, IMAGE_SIZE - HALF_SIZE * 0.5, HALF_SIZE * 1.85);
+
+        /* Longitude Lines*/
+        ctx.strokeStyle = 'red';
+        drawLine(HALF_SIZE, 0, HALF_SIZE, IMAGE_SIZE);
+        drawEllipse(HALF_SIZE * 0.15, 0, IMAGE_SIZE - IMAGE_SIZE * 0.15, IMAGE_SIZE, 0, 0, 2 * Math.PI);
+        drawEllipse(HALF_SIZE * 0.48, 0, IMAGE_SIZE - IMAGE_SIZE * 0.48, IMAGE_SIZE, 0, 0, 2 * Math.PI);
+
+        /* Compass */
+        ctx.fillStyle = 'red';
+        ctx.fillRect(0 + 16, needleLength, needleLength, 4);
+        ctx.fillText(compass_text[3], 0, needleLength + 8);
+        ctx.fillText(compass_text[2], needleLength + 16 + 4, needleLength + 8);
+        ctx.fillText('Longitude', 0, IMAGE_SIZE - 16);
+
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(0.5 * needleLength + 16, 0.5 * needleLength, 4, needleLength);
+        ctx.fillText(compass_text[0], 0.5 * needleLength + 16 - 4, 0.5 * needleLength - 8);
+        ctx.fillText(compass_text[1], 0.5 * needleLength + 16 - 4, 1.5 * needleLength + 16 + 4);
+        ctx.fillText('Latitude', 0, IMAGE_SIZE - 40);
+    }
+
+
     function drawEllipse(x, y, width, height, rotation, startAngle, endAngle, anticlockwise) {
         ctx.beginPath();
         x += width / 2;
@@ -119,9 +171,29 @@ define(function() {
     }
 
 
+    function drawLine(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+
+
+    function drawLabel(x, y, width, height, text) {
+        var labelColor = ctx.fillStyle;
+        ctx.fillRect(x, y, width, height);
+        ctx.fillStyle = 'white';
+        ctx.fillText(text, x + 5, y + 18);
+        ctx.fillStyle = labelColor;
+    }
+
+
     function radian(deg) {
         return deg / 180 * Math.PI;
     }
 
-    return draw;
+    return {
+        moon: drawMoon,
+        grid: drawGrid
+    };
 });
