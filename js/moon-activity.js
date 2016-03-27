@@ -2,7 +2,7 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
 
     'use strict';
 
-    var canvas, ctx, moon, IMAGE_SIZE, HALF_SIZE, updateTimeout;
+    var canvas, ctx, IMAGE_SIZE, HALF_SIZE, updateTimeout;
     var toggleGridBtn, toggleHemisphereBtn, showGrid, showSouth;
 
 
@@ -12,8 +12,6 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
 
         canvas = document.querySelector('canvas');
         ctx = canvas.getContext('2d');
-
-        moon = document.querySelector('img#moon');
 
         initPrefs();
         initEventListeners();

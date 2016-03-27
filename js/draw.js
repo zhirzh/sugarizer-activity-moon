@@ -188,10 +188,6 @@ define(function() {
     }
 
 
-    function radian(deg) {
-        return deg / 180 * Math.PI;
-    }
-
     return {
         moon: drawMoon,
         grid: drawGrid
