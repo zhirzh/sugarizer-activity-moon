@@ -102,6 +102,7 @@ define(function() {
         ctx.globalCompositeOperation = 'multiply';
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
         ctx.globalAlpha = 0.5;
+
         ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
@@ -118,18 +119,18 @@ define(function() {
 
         /* Latitude Labels */
         ctx.fillStyle = 'blue';
-        drawLabel(HALF_SIZE + 1, HALF_SIZE, 26, 22, '0°');
-        drawLabel(HALF_SIZE + 1, HALF_SIZE * 0.50, 36, 22, '30°');
-        drawLabel(HALF_SIZE + 1, HALF_SIZE * 1.5, 36, 22, '30°');
-        drawLabel(HALF_SIZE + 1, HALF_SIZE * 0.15, 36, 22, '60°');
-        drawLabel(HALF_SIZE + 1, HALF_SIZE * 1.85, 36, 22, '60°');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE, 26, 22, '0\xB0');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE * 0.50, 36, 22, '30\xB0');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE * 1.5, 36, 22, '30\xB0');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE * 0.15, 36, 22, '60\xB0');
+        drawLabel(HALF_SIZE + 1, HALF_SIZE * 1.85, 36, 22, '60\xB0');
 
         /* Longitude Labels */
         ctx.fillStyle = 'red';
-        drawLabel((HALF_SIZE * 0.48), HALF_SIZE, 36, 22, '30°');
-        drawLabel((HALF_SIZE * 1.52), HALF_SIZE, 36, 22, '30°');
-        drawLabel((HALF_SIZE * 0.15), HALF_SIZE, 36, 22, '60°');
-        drawLabel((HALF_SIZE * 1.85), HALF_SIZE, 36, 22, '60°');
+        drawLabel((HALF_SIZE * 0.48), HALF_SIZE, 36, 22, '30\xB0');
+        drawLabel((HALF_SIZE * 1.52), HALF_SIZE, 36, 22, '30\xB0');
+        drawLabel((HALF_SIZE * 0.15), HALF_SIZE, 36, 22, '60\xB0');
+        drawLabel((HALF_SIZE * 1.85), HALF_SIZE, 36, 22, '60\xB0');
 
         /* Latitude Lines*/
         ctx.strokeStyle = 'blue';
