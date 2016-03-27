@@ -75,6 +75,7 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
             Draw moon.
         */
 
+        clearTimeout(updateTimeout);
         updateInfo();
         Draw.moon(DataModel.phase_of_moon, IMAGE_SIZE);
         if (showSouth) {
@@ -146,7 +147,6 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
         }
         window.localStorage.setItem('showGrid', showGrid);
 
-        clearTimeout(updateTimeout);
         updateView();
     }
 
@@ -164,7 +164,6 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
         }
         window.localStorage.setItem('showSouth', showSouth);
 
-        clearTimeout(updateTimeout);
         updateView();
     }
 
