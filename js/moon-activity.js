@@ -75,7 +75,8 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
 
         clearTimeout(updateTimeout);
         updateInfo();
-        Draw.moon(DataModel.phase_of_moon, IMAGE_SIZE);
+        Draw.setImageSize(IMAGE_SIZE);
+        Draw.moon(DataModel.phase_of_moon);
         if (showSouth) {
             ctx.save();
             ctx.rotate(Math.PI);
@@ -83,10 +84,10 @@ define(['activity/data-model', 'activity/draw'], function(DataModel, Draw) {
             ctx.restore();
 
             if (showGrid) {
-                Draw.grid('SNWE', IMAGE_SIZE);
+                Draw.grid('SNWE');
             }
         } else if (showGrid) {
-            Draw.grid('NSEW', IMAGE_SIZE);
+            Draw.grid('NSEW');
         }
         updateTimeout = setTimeout(updateView, 5000);
     }

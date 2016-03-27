@@ -47,9 +47,7 @@ define(function() {
     })();
 
 
-    function drawMoon(phase_of_moon, IMAGE_SIZE) {
-        var HALF_SIZE = IMAGE_SIZE / 2;
-
+    function drawMoon(phase_of_moon) {
         var phase_shadow_adjust = null;
         var arc_scale = null;
 
@@ -110,8 +108,7 @@ define(function() {
     }
 
 
-    function drawGrid(compass_text, IMAGE_SIZE) {
-        var HALF_SIZE = 0.5 * IMAGE_SIZE;
+    function drawGrid(compass_text) {
         var needleLength = 0.08 * IMAGE_SIZE;
 
         ctx.font = '16px Sans';
@@ -189,8 +186,15 @@ define(function() {
     }
 
 
+    function setImageSize(size) {
+        IMAGE_SIZE = size;
+        HALF_SIZE = 0.5 * IMAGE_SIZE;
+    }
+
+
     return {
         moon: drawMoon,
-        grid: drawGrid
+        grid: drawGrid,
+        setImageSize: setImageSize
     };
 });
