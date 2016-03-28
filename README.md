@@ -8,7 +8,9 @@
     * ~~Generated information~~
     * ~~Moon view~~
 * ~~Add 'toggle hemisphere' feature~~
-* Add 'show grid' feature
-* Add compass and legend
+* ~~Add 'show grid' feature~~
+* ~~Add compass and legend~~
 * ~~Add module to generate information~~
-* Draw shadow region of moon
+* ~~Draw shadow region of moon~~
+* ~~Implement localization using webl10n.js~~
+    * Implement _alternate_ localization using webl10n.js
