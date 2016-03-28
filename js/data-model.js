@@ -175,23 +175,32 @@ define(function() {
         */
 
         if (self.phase_of_moon >= 0 && self.phase_of_moon < 0.025) {
-            return "New Moon";
+            return "phase-0";
+            // return "New Moon";
         } else if (self.phase_of_moon >= 0.025 && self.phase_of_moon < 0.225) {
-            return "Waxing Crescent";
+            return "phase-1";
+            // return "Waxing Crescent";
         } else if (self.phase_of_moon >= 0.225 && self.phase_of_moon < 0.275) {
-            return "First Quarter";
+            return "phase-2";
+            // return "First Quarter";
         } else if (self.phase_of_moon >= 0.275 && self.phase_of_moon < 0.475) {
-            return "Waxing Gibbous";
+            return "phase-3";
+            // return "Waxing Gibbous";
         } else if (self.phase_of_moon >= 0.475 && self.phase_of_moon < 0.525) {
-            return "Full Moon";
+            return "phase-4";
+            // return "Full Moon";
         } else if (self.phase_of_moon >= 0.525 && self.phase_of_moon < 0.735) {
-            return "Waning Gibbous";
+            return "phase-5";
+            // return "Waning Gibbous";
         } else if (self.phase_of_moon >= 0.735 && self.phase_of_moon < 0.775) {
-            return "Last Quarter";
+            return "phase-6";
+            // return "Last Quarter";
         } else if (self.phase_of_moon >= 0.775 && self.phase_of_moon < 0.975) {
-            return "Waning Crescent";
+            return "phase-7";
+            // return "Waning Crescent";
         } else {
-            return "New Moon";
+            return "phase-0";
+            // return "New Moon";
         }
     };
 
