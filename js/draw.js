@@ -9,6 +9,11 @@ define(function() {
     var IMAGE_SIZE, HALF_SIZE;
 
     if (!ctx.ellipse) {
+        /*
+            CanvasRenderingContext2D.ellipse() is esperimental at the time of writing
+            Provide pollyfill
+        */
+
         ctx.ellipse = function(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise) {
             /* for this project, we do not need: rotation, startAngle, endAngle, anticlockwise */
             x -= radiusX;
@@ -44,6 +49,10 @@ define(function() {
 
 
     function drawMoon(phase_of_moon) {
+        /*
+            Draw mask corresponding to either shaded region or lit region
+        */
+
         var phase_shadow_adjust = null;
         var arc_scale = null;
 
@@ -53,7 +62,7 @@ define(function() {
 
         if (phase_of_moon < 0.25) {
             phase_shadow_adjust = phase_of_moon - Math.abs(Math.sin(phase_of_moon * Math.PI * 4) / 18.0);
-            arc_scale = 1 - 4 * phase_shadow_adjust;
+            arc_scale = 1 - (4 * phase_shadow_adjust);
 
             ctx.fillStyle = 'white';
             ctx.fillRect(HALF_SIZE, 0, HALF_SIZE, IMAGE_SIZE);
@@ -73,7 +82,7 @@ define(function() {
 
         } else if (phase_of_moon < 0.75) {
             phase_shadow_adjust = phase_of_moon - Math.abs(Math.sin(phase_of_moon * Math.PI * 4) / 18.0);
-            arc_scale = 1 - 4 * (phase_shadow_adjust - 0.5);
+            arc_scale = 1 - (4 * (phase_shadow_adjust - 0.5));
 
             ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, HALF_SIZE, IMAGE_SIZE);
@@ -91,12 +100,13 @@ define(function() {
             drawEllipse(HALF_SIZE - IMAGE_SIZE * arc_scale / 2, 0, IMAGE_SIZE * arc_scale, IMAGE_SIZE, 0, Math.PI / 2, 3 * Math.PI / 2);
             ctx.fill();
         }
+
         ctx.save();
 
         ctx.globalCompositeOperation = 'multiply';
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
-        ctx.globalAlpha = 0.5;
 
+        ctx.globalAlpha = 0.5;
         ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
@@ -105,6 +115,12 @@ define(function() {
 
 
     function drawGrid(compass_text) {
+        /*
+            Draw longitudes at 0, +/-30 and +/-60 degrees
+            Draw latitudes at 0, +/-30 and +/-60 degrees
+            Draw compass
+        */
+
         var needleLength = 0.08 * IMAGE_SIZE;
 
         ctx.font = '16px Sans';
@@ -155,6 +171,11 @@ define(function() {
 
 
     function drawEllipse(x, y, width, height, rotation, startAngle, endAngle, anticlockwise) {
+        /*
+            Wrapper for drawing ellipse on canvas
+            converts bounding-box drawing instructions to center-axes instructions
+        */
+
         ctx.beginPath();
         x += width / 2;
         y += height / 2;
@@ -166,6 +187,10 @@ define(function() {
 
 
     function drawLine(x1, y1, x2, y2) {
+        /*
+            Wrapper for drawing line on canvas
+        */
+
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
@@ -174,6 +199,10 @@ define(function() {
 
 
     function drawLabel(x, y, width, height, text) {
+        /*
+            Wrapper for placing text on canvas
+        */
+
         var labelColor = ctx.fillStyle;
         ctx.fillRect(x, y, width, height);
         ctx.fillStyle = 'white';
@@ -183,6 +212,10 @@ define(function() {
 
 
     function setImageSize(size) {
+        /*
+            Update IMAGE_SIZE as window resizes
+        */
+
         IMAGE_SIZE = size;
         HALF_SIZE = 0.5 * IMAGE_SIZE;
     }

@@ -16,6 +16,10 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
 
     function setup() {
+        /*
+            Exposed function - calls all other functions
+        */
+
         initPrefs();
         initEventListeners();
         updateSizes();
@@ -25,7 +29,7 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
     function initPrefs() {
         /*
-            Store preferences in window.localStorage across sessions.
+            Read/write user preferences from/to window.localStorage
         */
 
         showGrid = window.localStorage.getItem('showGrid');
@@ -73,7 +77,12 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
     function updateView() {
         /*
-            Draw moon.
+            Update moon data and
+            draw moon, repeteadly, after a fixed interval.
+
+            Also, depending on user's preferences:
+                * Toggle hemisphere
+                * Draw grid
         */
 
         clearTimeout(updateTimeout);
@@ -97,6 +106,11 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
 
     function updateInfo() {
+        /*
+            Update moon data and
+            render updated information as HTML
+        */
+
         DataModel.update_moon_calculations();
 
         var infoParts = {};
@@ -209,6 +223,10 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
 
     function toggleGrid() {
+        /*
+            Show/hide grid
+        */
+
         showGrid = !showGrid;
         if (showGrid) {
             toggleGridBtn.classList.add('active');
@@ -239,6 +257,11 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
 
     function saveImage() {
+        /*
+            Read canvas data as base64 string and
+            initiate download
+        */
+
         var dataURL = canvas.toDataURL('image/jpeg', 1);
         var downloadLink = document.querySelector('#save-image-button a');
         downloadLink.href = dataURL;
@@ -247,6 +270,10 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
 
     function formatDate(date) {
+        /*
+            Modify rendered dates to match Sugar Moon format
+        */
+
         if (!date) {
             date = new Date();
         } else {
