@@ -150,18 +150,18 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
         ];
 
         infoParts[_(keys[4])] = [
-            100 * DataModel.phase_of_moon.toFixed(2) + '%',
+            (100 * DataModel.phase_of_moon).toFixed(2) + '%',
             _('thru'),
             DataModel.lunation
         ];
 
         infoParts[_(keys[5])] = [
-            100 * DataModel.percent_of_full_moon.toFixed(2) + '%',
+            (100 * DataModel.percent_of_full_moon).toFixed() + '%',
             _('estimated')
         ];
 
         infoParts[_(keys[6])] = [
-            DataModel.selenographic_deg.toFixed(2) + '\u00b0',
+            DataModel.selenographic_deg.toFixed(1) + '\u00b0',
             _(DataModel.west_or_east),
             '(' + _(DataModel.rise_or_set) + ')'
         ];
