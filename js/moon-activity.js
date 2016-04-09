@@ -96,10 +96,10 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
             ctx.restore();
 
             if (showGrid) {
-                Draw.grid('SNWE');
+                Draw.grid(_('SNWE'));
             }
         } else if (showGrid) {
-            Draw.grid('NSEW');
+            Draw.grid(_('NSEW'));
         }
         updateTimeout = setTimeout(updateView, 5000);
     }
