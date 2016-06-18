@@ -1,4 +1,4 @@
-define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'moment-with-locales.min'], function(DataModel, Draw, l10n, env, moment) {
+define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'sugar-web/datastore', 'moment-with-locales.min'], function(DataModel, Draw, l10n, env, datastore, moment) {
 
     'use strict';
 
@@ -290,13 +290,22 @@ define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'mom
     function saveImage() {
         /*
             Read canvas data as base64 string and
-            initiate download
+            store image in datastore
         */
 
-        var dataURL = canvas.toDataURL('image/jpeg', 1);
-        var downloadLink = document.querySelector('#save-image-button a');
-        downloadLink.href = dataURL;
-        downloadLink.click();
+		var mimetype = 'image/jpeg';
+        var inputData = canvas.toDataURL(mimetype, 1);
+		var metadata = {
+			mimetype: mimetype,
+			title: "Image Moon",
+			activity: "org.olpcfrance.MediaViewerActivity",
+			timestamp: new Date().getTime(),
+			creation_time: new Date().getTime(),
+			file_size: 0
+		};
+		datastore.create(metadata, function() {
+			console.log("export done.")
+		}, inputData);
     }
 
 
