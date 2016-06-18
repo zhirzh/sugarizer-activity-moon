@@ -1,4 +1,4 @@
-define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, Draw, l10n) {
+define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'moment-with-locales.min'], function(DataModel, Draw, l10n, env, moment) {
 
     'use strict';
 
@@ -10,6 +10,10 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
     var _ = l10n.get;
 
+	getSugarSettings(function(settings) {
+		moment.locale(settings.language);
+	});
+	
     var IMAGE_SIZE, HALF_SIZE, updateTimeout;
     var showGrid, showSouth;
 
@@ -60,6 +64,27 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 	}
 	
 
+	function getSugarSettings(callback) {
+		var defaultSettings = {
+			name: "",
+			language: navigator.language
+		};
+		if (!env.isSugarizer()) {
+			callback(defaultSettings);
+			return;
+		}
+		if (typeof chrome != 'undefined' && chrome.app && chrome.app.runtime) {
+			var loadedSettings = JSON.parse(values.sugar_settings);
+			chrome.storage.local.get('sugar_settings', function(values) {
+				callback(loadedSettings);
+			}); 
+		} else {
+			var loadedSettings = JSON.parse(localStorage.sugar_settings);
+			callback(loadedSettings);
+		}
+	}
+	
+	
     function updateSizes() {
         /*
             Dynamically resize elements as and when the window resizes.
@@ -287,19 +312,8 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
             date = new Date(1000 * date);
         }
 
-        date = date.toString().split(' ');
-
-        date[0] = _(date[0]);
-        date[1] = [date[2], date[2] = date[1]][0];
-        date[2] = _(date[2]);
-        date[4] = date[4].split(':');
-        date[5] = ((+date[4][0]) < 12) ? 'AM' : 'PM';
-        date[4][0] = ((+date[4][0]) % 12) ? (+date[4][0]) % 12 : 12;
-        date[4] = date[4].join(':');
-
-        date[6] = date[6].slice(1, -1);
-
-        return date.join(' ');
+		var momentDate = moment(date);
+        return momentDate.format('LLLL').replace(momentDate.format('LT'), momentDate.format('LTS'));
     }
 
     return {
