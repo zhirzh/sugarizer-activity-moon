@@ -20,37 +20,45 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
             Exposed function - calls all other functions
         */
 
-        initPrefs();
         initEventListeners();
         updateSizes();
         updateView();
     }
 
 
-    function initPrefs() {
+    function initPrefs(pref) {
         /*
-            Read/write user preferences from/to window.localStorage
+            Read user preferences from datastore
         */
 
-        showGrid = window.localStorage.getItem('showGrid');
-        if (showGrid === 'true') {
+        showGrid = pref.showGrid;
+        if (showGrid) {
             showGrid = true;
             toggleGridBtn.classList.add('active');
         } else {
             showGrid = false;
-            window.localStorage.setItem('showGrid', false);
+            toggleGridBtn.classList.remove('active');
         }
 
-        showSouth = window.localStorage.getItem('showSouth');
-        if (showSouth === 'true') {
+        showSouth = pref.showSouth;
+        if (showSouth) {
             showSouth = true;
             toggleHemisphereBtn.classList.add('active');
         } else {
             showSouth = false;
-            window.localStorage.setItem('showSouth', false);
+            toggleHemisphereBtn.classList.remove('active');
         }
+		updateView();
+
     }
 
+    function getPrefs() {
+		return {
+			showGrid: showGrid,
+			showSouth: showSouth
+		};
+	}
+	
 
     function updateSizes() {
         /*
@@ -233,7 +241,6 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
         } else {
             toggleGridBtn.classList.remove('active');
         }
-        window.localStorage.setItem('showGrid', showGrid);
 
         updateView();
     }
@@ -250,7 +257,6 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
         } else {
             toggleHemisphereBtn.classList.remove('active');
         }
-        window.localStorage.setItem('showSouth', showSouth);
 
         updateView();
     }
@@ -298,6 +304,8 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
     return {
         setup: setup,
+		initPrefs: initPrefs,
+		getPrefs: getPrefs,
         updateInfo: updateInfo
     };
 });
