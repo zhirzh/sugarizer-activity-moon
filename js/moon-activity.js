@@ -9,9 +9,21 @@ define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'sug
         ctx = canvas.getContext('2d');
 
     var _ = l10n.get;
+	
+	var first = true;
 
-	getSugarSettings(function(settings) {
-		moment.locale(settings.language);
+	l10n.ready(function() {
+		if (first) {
+			first = false;
+			getSugarSettings(function(settings) {
+				l10n.language.code = settings.language;
+				moment.locale(settings.language);
+				var refreshTime = setTimeout(function() {
+					clearTimeout(refreshTime);
+					updateView();
+				}, 50);
+			});
+		}
 	});
 	
     var IMAGE_SIZE, HALF_SIZE, updateTimeout;
@@ -26,7 +38,6 @@ define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'sug
 
         initEventListeners();
         updateSizes();
-        updateView();
     }
 
 
@@ -52,7 +63,6 @@ define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'sug
             showSouth = false;
             toggleHemisphereBtn.classList.remove('active');
         }
-		updateView();
 
     }
 
@@ -236,6 +246,10 @@ define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'sug
 
         infoHTML = infoHTML.join('');
         document.querySelector('#panel-left').innerHTML = infoHTML;
+		
+		 document.getElementById("toggle-grid-button").title = _('ToggleGrid');
+		 document.getElementById("toggle-hemisphere-button").title = _('ToggleHemisphere');
+		 document.getElementById("save-image-button").title = _('SaveImage');
     }
 
 

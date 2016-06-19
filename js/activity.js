@@ -9,12 +9,6 @@ define(function (require) {
         // Initialize the activity.
         activity.setup();
         moonActivity.setup();
-        l10n.ready(function() {
-            /*
-                Whenever language changes, render translated text
-            */
-            moonActivity.updateInfo();
-        });
 		var datastoreObject = activity.getDatastoreObject();
 		datastoreObject.loadAsText(function (error, metadata, data) {
 			if (data == null)
