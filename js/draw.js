@@ -6,6 +6,9 @@ define(function() {
         ctx = canvas.getContext('2d'),
         moon = document.querySelector('img#moon');
 
+	var l10n = require('webL10n');
+    var _ = l10n.get;
+	
     var IMAGE_SIZE, HALF_SIZE;
 
     if (!ctx.ellipse) {
@@ -160,13 +163,13 @@ define(function() {
         ctx.fillRect(0 + 16, needleLength, needleLength, 4);
         ctx.fillText(compass_text[3], 0, needleLength + 8);
         ctx.fillText(compass_text[2], needleLength + 16 + 4, needleLength + 8);
-        ctx.fillText('Longitude', 0, IMAGE_SIZE - 16);
+        ctx.fillText(_('Longitude'), 0, IMAGE_SIZE - 16);
 
         ctx.fillStyle = 'blue';
         ctx.fillRect(0.5 * needleLength + 16, 0.5 * needleLength, 4, needleLength);
         ctx.fillText(compass_text[0], 0.5 * needleLength + 16 - 4, 0.5 * needleLength - 8);
         ctx.fillText(compass_text[1], 0.5 * needleLength + 16 - 4, 1.5 * needleLength + 16 + 4);
-        ctx.fillText('Latitude', 0, IMAGE_SIZE - 40);
+        ctx.fillText(_('Latitude'), 0, IMAGE_SIZE - 40);
     }
 
 

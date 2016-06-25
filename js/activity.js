@@ -8,12 +8,36 @@ define(function (require) {
 
         // Initialize the activity.
         activity.setup();
+<<<<<<< HEAD
         l10n.ready(function() {
             /*
                 Whenever language changes, render translated text
             */
             moonActivity.setup();
         });
+=======
+        moonActivity.setup();
+		var datastoreObject = activity.getDatastoreObject();
+		datastoreObject.loadAsText(function (error, metadata, data) {
+			if (data == null)
+				return;
+			moonActivity.initPrefs(data);
+		});
+		var stopButton = document.getElementById("stop-button");
+		stopButton.addEventListener('click', function (event) {
+			var pref = moonActivity.getPrefs();
+			datastoreObject.setDataAsText(pref);
+			console.log("writing...");
+			datastoreObject.save(function (error) {
+				if (error === null) {
+					console.log("write done.");
+				}
+				else {
+					console.log("write failed.");
+				}
+			});
+		});
+>>>>>>> 5767effcc16f2d67c8f045d575d262e65ba546f4
 
     });
 

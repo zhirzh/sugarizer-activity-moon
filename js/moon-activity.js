@@ -1,4 +1,4 @@
-define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, Draw, l10n) {
+define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'sugar-web/datastore', 'moment-with-locales.min'], function(DataModel, Draw, l10n, env, datastore, moment) {
 
     'use strict';
 
@@ -9,7 +9,23 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
         ctx = canvas.getContext('2d');
 
     var _ = l10n.get;
+	
+	var first = true;
 
+	l10n.ready(function() {
+		if (first) {
+			first = false;
+			getSugarSettings(function(settings) {
+				l10n.language.code = settings.language;
+				moment.locale(settings.language);
+				var refreshTime = setTimeout(function() {
+					clearTimeout(refreshTime);
+					updateView();
+				}, 50);
+			});
+		}
+	});
+	
     var IMAGE_SIZE, HALF_SIZE, updateTimeout;
     var showGrid, showSouth;
 
@@ -20,38 +36,65 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
             Exposed function - calls all other functions
         */
 
-        initPrefs();
         initEventListeners();
         updateSizes();
-        updateView();
     }
 
 
-    function initPrefs() {
+    function initPrefs(pref) {
         /*
-            Read/write user preferences from/to window.localStorage
+            Read user preferences from datastore
         */
 
-        showGrid = window.localStorage.getItem('showGrid');
-        if (showGrid === 'true') {
+        showGrid = pref.showGrid;
+        if (showGrid) {
             showGrid = true;
             toggleGridBtn.classList.add('active');
         } else {
             showGrid = false;
-            window.localStorage.setItem('showGrid', false);
+            toggleGridBtn.classList.remove('active');
         }
 
-        showSouth = window.localStorage.getItem('showSouth');
-        if (showSouth === 'true') {
+        showSouth = pref.showSouth;
+        if (showSouth) {
             showSouth = true;
             toggleHemisphereBtn.classList.add('active');
         } else {
             showSouth = false;
-            window.localStorage.setItem('showSouth', false);
+            toggleHemisphereBtn.classList.remove('active');
         }
+
     }
 
+    function getPrefs() {
+		return {
+			showGrid: showGrid,
+			showSouth: showSouth
+		};
+	}
+	
 
+	function getSugarSettings(callback) {
+		var defaultSettings = {
+			name: "",
+			language: navigator.language
+		};
+		if (!env.isSugarizer()) {
+			callback(defaultSettings);
+			return;
+		}
+		if (typeof chrome != 'undefined' && chrome.app && chrome.app.runtime) {
+			var loadedSettings = JSON.parse(values.sugar_settings);
+			chrome.storage.local.get('sugar_settings', function(values) {
+				callback(loadedSettings);
+			}); 
+		} else {
+			var loadedSettings = JSON.parse(localStorage.sugar_settings);
+			callback(loadedSettings);
+		}
+	}
+	
+	
     function updateSizes() {
         /*
             Dynamically resize elements as and when the window resizes.
@@ -150,13 +193,21 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
         ];
 
         infoParts[_(keys[4])] = [
+<<<<<<< HEAD
             (100 * DataModel.phase_of_moon).toFixed(2) + '%',
+=======
+            (100 * DataModel.phase_of_moon).toFixed(4) + '%',
+>>>>>>> 5767effcc16f2d67c8f045d575d262e65ba546f4
             _('thru'),
             DataModel.lunation
         ];
 
         infoParts[_(keys[5])] = [
+<<<<<<< HEAD
             (100 * DataModel.percent_of_full_moon).toFixed() + '%',
+=======
+            (100 * DataModel.percent_of_full_moon).toFixed(4) + '%',
+>>>>>>> 5767effcc16f2d67c8f045d575d262e65ba546f4
             _('estimated')
         ];
 
@@ -203,6 +254,10 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
 
         infoHTML = infoHTML.join('');
         document.querySelector('#panel-left').innerHTML = infoHTML;
+		
+		 document.getElementById("toggle-grid-button").title = _('ToggleGrid');
+		 document.getElementById("toggle-hemisphere-button").title = _('ToggleHemisphere');
+		 document.getElementById("save-image-button").title = _('SaveImage');
     }
 
 
@@ -233,7 +288,6 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
         } else {
             toggleGridBtn.classList.remove('active');
         }
-        window.localStorage.setItem('showGrid', showGrid);
 
         updateView();
     }
@@ -250,7 +304,6 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
         } else {
             toggleHemisphereBtn.classList.remove('active');
         }
-        window.localStorage.setItem('showSouth', showSouth);
 
         updateView();
     }
@@ -259,13 +312,22 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
     function saveImage() {
         /*
             Read canvas data as base64 string and
-            initiate download
+            store image in datastore
         */
 
-        var dataURL = canvas.toDataURL('image/jpeg', 1);
-        var downloadLink = document.querySelector('#save-image-button a');
-        downloadLink.href = dataURL;
-        downloadLink.click();
+		var mimetype = 'image/jpeg';
+        var inputData = canvas.toDataURL(mimetype, 1);
+		var metadata = {
+			mimetype: mimetype,
+			title: "Image Moon",
+			activity: "org.olpcfrance.MediaViewerActivity",
+			timestamp: new Date().getTime(),
+			creation_time: new Date().getTime(),
+			file_size: 0
+		};
+		datastore.create(metadata, function() {
+			console.log("export done.")
+		}, inputData);
     }
 
 
@@ -281,23 +343,14 @@ define(['activity/data-model', 'activity/draw', 'webL10n'], function(DataModel, 
             date = new Date(1000 * date);
         }
 
-        date = date.toString().split(' ');
-
-        date[0] = _(date[0]);
-        date[1] = [date[2], date[2] = date[1]][0];
-        date[2] = _(date[2]);
-        date[4] = date[4].split(':');
-        date[5] = ((+date[4][0]) < 12) ? 'AM' : 'PM';
-        date[4][0] = ((+date[4][0]) % 12) ? (+date[4][0]) % 12 : 12;
-        date[4] = date[4].join(':');
-
-        date[6] = date[6].slice(1, -1);
-
-        return date.join(' ');
+		var momentDate = moment(date);
+        return momentDate.format('LLLL').replace(momentDate.format('LT'), momentDate.format('LTS'));
     }
 
     return {
         setup: setup,
+		initPrefs: initPrefs,
+		getPrefs: getPrefs,
         updateInfo: updateInfo
     };
 });
