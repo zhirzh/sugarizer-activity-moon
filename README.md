@@ -13,4 +13,3 @@
 * ~~Add module to generate information~~
 * ~~Draw shadow region of moon~~
 * ~~Implement localization using webl10n.js~~
-    * Implement _alternate_ localization using webl10n.js
