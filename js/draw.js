@@ -117,6 +117,33 @@ define(function() {
     }
 
 
+    function drawEclipse(next_lunar_eclipse_sec, last_lunar_eclipse_sec) {
+        if (
+            (
+                next_lunar_eclipse_sec !== -1 || 
+                last_lunar_eclipse_sec <= 7200
+            ) && (
+                next_lunar_eclipse_sec <= 7200 || 
+                last_lunar_eclipse_sec !== -1
+            ) && (
+                Math.min(next_lunar_eclipse_sec, last_lunar_eclipse_sec) <= 7200
+            )
+        ) {
+            var eclipse_alpha;
+            if (next_lunar_eclipse_sec == -1) {
+                eclipse_alpha = last_lunar_eclipse_sec / 7200;
+            }
+            else if (last_lunar_eclipse_sec == -1) {
+                eclipse_alpha = next_lunar_eclipse_sec / 7200;
+            }
+            else {
+                eclipse_alpha = Math.min(next_lunar_eclipse_sec, last_lunar_eclipse_sec) / 7200;
+            }
+            console.log(~~eclipse_alpha);
+        }
+    }
+
+
     function drawGrid(compass_text) {
         /*
             Draw longitudes at 0, +/-30 and +/-60 degrees
@@ -226,6 +253,7 @@ define(function() {
 
     return {
         moon: drawMoon,
+        eclipse: drawEclipse,
         grid: drawGrid,
         setImageSize: setImageSize
     };
