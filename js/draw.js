@@ -6,7 +6,7 @@ define(function() {
         ctx = canvas.getContext('2d'),
         moon = document.querySelector('img#moon');
 
-	var l10n = require('webL10n');
+    var l10n = require('webL10n');
     var _ = l10n.get;
 
     var IMAGE_SIZE, HALF_SIZE;
