@@ -11,8 +11,9 @@ define(function (require) {
         moonActivity.setup();
         var datastoreObject = activity.getDatastoreObject();
         datastoreObject.loadAsText(function (error, metadata, data) {
-            if (data == null)
+            if (data == null) {
                 return;
+            }
             moonActivity.initPrefs(data);
         });
         var stopButton = document.getElementById("stop-button");
