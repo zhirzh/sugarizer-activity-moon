@@ -1,4 +1,4 @@
-define(['webL10n'], function(l10n) {
+define(['activity/data-model', 'webL10n'], function(DataModel, l10n) {
 
     'use strict';
 
@@ -50,7 +50,7 @@ define(['webL10n'], function(l10n) {
     }
 
 
-    function drawMoon(phase_of_moon) {
+    function drawMoon() {
         /*
             Draw mask corresponding to either shaded region or lit region
         */
@@ -62,8 +62,8 @@ define(['webL10n'], function(l10n) {
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
-        if (phase_of_moon < 0.25) {
-            phase_shadow_adjust = phase_of_moon - Math.abs(Math.sin(phase_of_moon * Math.PI * 4) / 18.0);
+        if (DataModel.phase_of_moon < 0.25) {
+            phase_shadow_adjust = DataModel.phase_of_moon - Math.abs(Math.sin(DataModel.phase_of_moon * Math.PI * 4) / 18.0);
             arc_scale = 1 - (4 * phase_shadow_adjust);
 
             ctx.fillStyle = 'white';
@@ -72,8 +72,8 @@ define(['webL10n'], function(l10n) {
             drawEllipse(HALF_SIZE - IMAGE_SIZE * arc_scale / 2, 0, IMAGE_SIZE * arc_scale, IMAGE_SIZE, 0, 3 * Math.PI / 2, Math.PI / 2);
             ctx.fill();
 
-        } else if (phase_of_moon < 0.50) {
-            phase_shadow_adjust = phase_of_moon + Math.abs(Math.sin(phase_of_moon * Math.PI * 4) / 18.0);
+        } else if (DataModel.phase_of_moon < 0.50) {
+            phase_shadow_adjust = DataModel.phase_of_moon + Math.abs(Math.sin(DataModel.phase_of_moon * Math.PI * 4) / 18.0);
             arc_scale = 4 * (phase_shadow_adjust - 0.25);
 
             ctx.fillStyle = 'white';
@@ -82,8 +82,8 @@ define(['webL10n'], function(l10n) {
             drawEllipse(HALF_SIZE - IMAGE_SIZE * arc_scale / 2, 0, IMAGE_SIZE * arc_scale, IMAGE_SIZE, 0, Math.PI / 2, 3 * Math.PI / 2);
             ctx.fill();
 
-        } else if (phase_of_moon < 0.75) {
-            phase_shadow_adjust = phase_of_moon - Math.abs(Math.sin(phase_of_moon * Math.PI * 4) / 18.0);
+        } else if (DataModel.phase_of_moon < 0.75) {
+            phase_shadow_adjust = DataModel.phase_of_moon - Math.abs(Math.sin(DataModel.phase_of_moon * Math.PI * 4) / 18.0);
             arc_scale = 1 - (4 * (phase_shadow_adjust - 0.5));
 
             ctx.fillStyle = 'white';
@@ -93,7 +93,7 @@ define(['webL10n'], function(l10n) {
             ctx.fill();
 
         } else {
-            phase_shadow_adjust = phase_of_moon + Math.abs(Math.sin(phase_of_moon * Math.PI * 4) / 18.0);
+            phase_shadow_adjust = DataModel.phase_of_moon + Math.abs(Math.sin(DataModel.phase_of_moon * Math.PI * 4) / 18.0);
             arc_scale = 4 * (phase_shadow_adjust - 0.75);
 
             ctx.fillStyle = 'white';
@@ -113,30 +113,32 @@ define(['webL10n'], function(l10n) {
         ctx.drawImage(moon, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
         ctx.restore();
+
+        drawEclipse();
     }
 
 
-    function drawEclipse(next_lunar_eclipse_sec, last_lunar_eclipse_sec) {
+    function drawEclipse() {
         if (
             (
-                next_lunar_eclipse_sec !== -1 ||
-                last_lunar_eclipse_sec <= 7200
+                DataModel.next_lunar_eclipse_sec !== -1 ||
+                DataModel.last_lunar_eclipse_sec <= 7200
             ) && (
-                next_lunar_eclipse_sec <= 7200 ||
-                last_lunar_eclipse_sec !== -1
+                DataModel.next_lunar_eclipse_sec <= 7200 ||
+                DataModel.last_lunar_eclipse_sec !== -1
             ) && (
-                Math.min(next_lunar_eclipse_sec, last_lunar_eclipse_sec) <= 7200
+                Math.min(DataModel.next_lunar_eclipse_sec, DataModel.last_lunar_eclipse_sec) <= 7200
             )
         ) {
             var eclipse_alpha;
-            if (next_lunar_eclipse_sec == -1) {
-                eclipse_alpha = last_lunar_eclipse_sec / 7200;
+            if (DataModel.next_lunar_eclipse_sec == -1) {
+                eclipse_alpha = DataModel.last_lunar_eclipse_sec / 7200;
             }
-            else if (last_lunar_eclipse_sec == -1) {
-                eclipse_alpha = next_lunar_eclipse_sec / 7200;
+            else if (DataModel.last_lunar_eclipse_sec == -1) {
+                eclipse_alpha = DataModel.next_lunar_eclipse_sec / 7200;
             }
             else {
-                eclipse_alpha = Math.min(next_lunar_eclipse_sec, last_lunar_eclipse_sec) / 7200;
+                eclipse_alpha = Math.min(DataModel.next_lunar_eclipse_sec, DataModel.last_lunar_eclipse_sec) / 7200;
             }
 
             ctx.save();

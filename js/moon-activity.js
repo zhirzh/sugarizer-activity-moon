@@ -131,8 +131,7 @@ define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'sug
         clearTimeout(updateTimeout);
         updateInfo();
         Draw.setImageSize(IMAGE_SIZE);
-        Draw.moon(DataModel.phase_of_moon);
-        Draw.eclipse(DataModel.next_lunar_eclipse_sec, DataModel.last_lunar_eclipse_sec);
+        Draw.moon();
         if (showSouth) {
             ctx.save();
             ctx.rotate(Math.PI);
