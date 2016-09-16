@@ -8,7 +8,7 @@ define(function() {
 
 	var l10n = require('webL10n');
     var _ = l10n.get;
-	
+
     var IMAGE_SIZE, HALF_SIZE;
 
     if (!ctx.ellipse) {
