@@ -139,7 +139,15 @@ define(function() {
             else {
                 eclipse_alpha = Math.min(next_lunar_eclipse_sec, last_lunar_eclipse_sec) / 7200;
             }
-            console.log(~~eclipse_alpha);
+
+            ctx.save();
+
+            ctx.globalAlpha = 0.25 * (1 - eclipse_alpha);
+            ctx.globalCompositeOperation = 'multiply';
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+
+            ctx.restore();
         }
     }
 
