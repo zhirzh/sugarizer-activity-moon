@@ -119,10 +119,10 @@ define(['webL10n'], function(l10n) {
     function drawEclipse(next_lunar_eclipse_sec, last_lunar_eclipse_sec) {
         if (
             (
-                next_lunar_eclipse_sec !== -1 || 
+                next_lunar_eclipse_sec !== -1 ||
                 last_lunar_eclipse_sec <= 7200
             ) && (
-                next_lunar_eclipse_sec <= 7200 || 
+                next_lunar_eclipse_sec <= 7200 ||
                 last_lunar_eclipse_sec !== -1
             ) && (
                 Math.min(next_lunar_eclipse_sec, last_lunar_eclipse_sec) <= 7200
