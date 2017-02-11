@@ -155,6 +155,10 @@ define(['activity/data-model', 'activity/draw', 'webL10n', 'sugar-web/env', 'sug
         */
 
         DataModel.update_moon_calculations();
+        console.log(
+          new Date(1000*DataModel.next_lunar_eclipse_date),
+          new Date(1000*DataModel.next_solar_eclipse_date)
+        )
 
         var infoParts = {};
         var keys = [

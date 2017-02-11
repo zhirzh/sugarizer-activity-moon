@@ -355,7 +355,6 @@ define(function() {
             if (date_string.slice(-1) !== "_") {
                 var next = Date.parse(date_string.slice(0, -1)) / 1000 + currOffset;
                 if (next >= now) {
-                    console.log(new Date(1000*next))
                     return next - now;
                 }
             }
