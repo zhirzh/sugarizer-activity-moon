@@ -1,5 +1,7 @@
 # Sugarizer Activity - Moon
 
+Web port of Sugar activity moon: https://wiki.sugarlabs.org/go/Activities/Moon
+
 ## To-Do
 * ~~Add toggle buttons to Navbar~~
 * ~~Add save button to Navbar~~
