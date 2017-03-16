@@ -1,4 +1,4 @@
-# Sugarizer Activity - Moon
+# [Sugarizer](https://github.com/llaske/sugarizer) Activity - Moon
 
 Web port of Sugar activity moon: https://wiki.sugarlabs.org/go/Activities/Moon
 
