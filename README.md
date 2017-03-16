@@ -2,16 +2,6 @@
 
 Web port of Sugar activity moon: https://wiki.sugarlabs.org/go/Activities/Moon
 
-## To-Do
-* ~~Add toggle buttons to Navbar~~
-* ~~Add save button to Navbar~~
-    * ~~Implement save feature~~
-* ~~Add 2 display panels~~
-    * ~~Generated information~~
-    * ~~Moon view~~
-* ~~Add 'toggle hemisphere' feature~~
-* ~~Add 'show grid' feature~~
-* ~~Add compass and legend~~
-* ~~Add module to generate information~~
-* ~~Draw shadow region of moon~~
-* ~~Implement localization using webl10n.js~~
+The official sugarizer activity is available here: http://try.sugarizer.org/activities/Moon.activity/
+
+A standalone demo is available here: https://zhirzh.github.io/sugarizer-activity-moon/
